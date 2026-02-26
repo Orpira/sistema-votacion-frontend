@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts Typography */
+@layer base {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Playfair Display", serif;
+		font-weight: 700;
+	}
+
+	h1 {
+		@apply text-4xl;
+	}
+
+	h2 {
+		@apply text-3xl;
+	}
+
+	h3 {
+		@apply text-2xl;
+	}
+
+	body {
+		@apply bg-gradient-to-br from-slate-50 via-amber-50 to-red-50 text-slate-900;
+	}
+}
+
+/* Custom Campaign Components */
+@layer components {
+	/* Primary Campaign Button */
+	.btn-primary {
+		@apply px-8 py-4 rounded-lg font-bold transition-all duration-300
+           bg-gradient-to-r from-red-600 to-red-700 text-white
+           hover:from-red-700 hover:to-red-800 hover:shadow-2xl hover:scale-105
+           active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed uppercase tracking-wide;
+	}
+
+	.btn-secondary {
+		@apply px-8 py-4 rounded-lg font-bold transition-all duration-300
+           bg-white text-red-600 border-2 border-red-600
+           hover:bg-red-50 hover:shadow-2xl hover:scale-105;
+	}
+
+	.btn-accent {
+		@apply px-8 py-4 rounded-lg font-bold transition-all duration-300
+           bg-gradient-to-r from-amber-500 to-amber-600 text-white
+           hover:from-amber-600 hover:to-amber-700 hover:shadow-2xl hover:scale-105 uppercase tracking-wide;
+	}
+
+	.btn-danger {
+		@apply px-8 py-4 rounded-lg font-bold transition-all duration-300
+           bg-red-700 text-white hover:bg-red-800 hover:shadow-2xl;
+	}
+
+	/* Premium Cards */
+	.card-premium {
+		@apply bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300
+           border-l-4 border-red-600 p-6;
+	}
+
+	.card-elevated {
+		@apply bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300
+           border-l-4 border-red-600;
+	}
+
+	.card-candidate {
+		@apply bg-gradient-to-br from-white to-amber-50 rounded-2xl shadow-lg hover:shadow-2xl 
+           transition-all duration-300 border-2 border-red-200 hover:border-red-600 overflow-hidden;
+	}
+
+	/* Form Elements */
+	.input-field {
+		@apply w-full px-4 py-3 rounded-lg border-2 border-slate-300
+           focus:border-red-600 focus:ring-4 focus:ring-red-600/10
+           transition-all duration-200 text-sm;
+	}
+
+	.input-field::placeholder {
+		@apply text-slate-400;
+	}
+
+	.select-field {
+		@apply w-full px-4 py-3 rounded-lg border-2 border-slate-300
+           focus:border-red-600 focus:ring-4 focus:ring-red-600/10
+           transition-all duration-200 text-sm appearance-none cursor-pointer;
+	}
+
+	/* Container */
+	.container-premium {
+		@apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+	}
+
+	/* Section Headers */
+	.section-header {
+		@apply text-center mb-12;
+	}
+
+	.section-header h2 {
+		@apply text-4xl mb-4 text-slate-900;
+	}
+
+	.section-header p {
+		@apply text-lg text-slate-600 max-w-2xl mx-auto;
+	}
+
+	/* Campaign Banner */
+	.campaign-banner {
+		@apply bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white py-4 px-6 rounded-lg
+           shadow-lg border-l-4 border-amber-500;
+	}
+}
+
+@media (min-width: 768px) {
+	h1 {
+		font-size: 3.75rem;
+		line-height: 1;
+	}
+
+	h2 {
+		font-size: 2.25rem;
+		line-height: 2.5rem;
+	}
+
+	.section-header h2 {
+		font-size: 3rem;
+		line-height: 1;
+	}
+}
+
+/* Animations */
+@layer utilities {
+	.animate-fade-in {
+		animation: fadeIn 0.4s ease-out both;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-float {
+		animation: float 3s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-8px);
+		}
+	}
+
+	.animate-pulse-glow {
+		animation: pulseGlow 2s ease-in-out infinite;
+	}
+
+	@keyframes pulseGlow {
+		0%,
+		100% {
+			box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.7);
+		}
+		50% {
+			box-shadow: 0 0 0 10px rgba(196, 30, 58, 0);
+		}
+	}
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+	@apply w-2;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-red-600 rounded-lg hover:bg-red-700;
+}

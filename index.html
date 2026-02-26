@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/voting-icon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Sistema de Votación Electrónico - Plataforma democrática, segura y transparente"
+		/>
+		<meta name="theme-color" content="#c41e3a" />
+		<title>Campaña Electoral 2026 - Vota por el Cambio</title>
+		
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+		
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			:root {
+				--primary: #c41e3a;
+				--primary-light: #e63946;
+				--primary-dark: #8b0000;
+				--accent: #d4a574;
+				--accent-dark: #a67c52;
+				--success: #06b6d4;
+				--slate-50: #f8fafc;
+				--slate-100: #f1f5f9;
+				--slate-200: #e2e8f0;
+				--slate-900: #0f172a;
+			}
+
+			html {
+				scroll-behavior: smooth;
+			}
+
+			body {
+				font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+				background: linear-gradient(135deg, #f8fafc 0%, #faf5f0 100%);
+				color: var(--slate-900);
+				line-height: 1.6;
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				font-family: "Playfair Display", serif;
+				font-weight: 700;
+				letter-spacing: -0.02em;
+			}
+
+			#root {
+				min-height: 100vh;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
+</html>

@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Dependency directories
+coverage/
+
+# Misc
+*.local
+
+# Optional: Exclude test coverage and reports
+coverage/
+*.lcov
+
+# Optional: Exclude local database or cache
+*.sqlite
+.cache/
+
+# Exclude any sensitive or local config
+*.env.*
+
+# Exclude public build artifacts
+public/build/

@@ -11,6 +11,7 @@ export interface Simpatizante {
 	ciudad: string;
 	barrio?: string;
 	password: string;
+	rol: "candidato" | "simpatizante";
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -27,6 +28,7 @@ export interface RegistroSimpatizante {
 	barrio?: string;
 	password: string;
 	confirmPassword: string;
+	rol?: "candidato" | "simpatizante";
 }
 
 // Tipos de Estadísticas de Simpatizantes

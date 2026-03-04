@@ -97,7 +97,9 @@ class LocalDbService {
 		sessionStorage.removeItem(STORAGE_KEYS.authTokenSession);
 	}
 
-	async register(datos: RegistroSimpatizante): Promise<RespuestaAPI<Simpatizante>> {
+	async register(
+		datos: RegistroSimpatizante,
+	): Promise<RespuestaAPI<Simpatizante>> {
 		this.ensureSeedData();
 		const simpatizantes = this.getSimpatizantesStored();
 
@@ -132,6 +134,7 @@ class LocalDbService {
 			ciudad: datos.ciudad,
 			barrio: datos.barrio,
 			password: datos.password,
+			rol: datos.rol || "simpatizante",
 			createdAt: now,
 			updatedAt: now,
 		};
@@ -220,17 +223,17 @@ class LocalDbService {
 		};
 	}
 
-	async getAllSimpatizantes(filters?: FiltrosDashboard): Promise<RespuestaAPI<Simpatizante[]>> {
+	async getAllSimpatizantes(
+		filters?: FiltrosDashboard,
+	): Promise<RespuestaAPI<Simpatizante[]>> {
 		this.ensureSeedData();
 		const simpatizantes = this.getSimpatizantesStored();
 
 		const filtered = simpatizantes.filter((s) => {
 			if (!filters) return true;
 
-			if (filters.ciudad && s.ciudad !== filters.ciudad)
-				return false;
-			if (filters.genero && s.genero !== filters.genero)
-				return false;
+			if (filters.ciudad && s.ciudad !== filters.ciudad) return false;
+			if (filters.genero && s.genero !== filters.genero) return false;
 
 			if (filters.rango_edad) {
 				const edad = this.calculateAge(new Date(s.fechaNacimiento));
@@ -253,7 +256,9 @@ class LocalDbService {
 			return {
 				success: false,
 				message: "Error al calcular estadísticas",
-				error: simpatizantesResponse.error || "No se pudieron obtener los simpatizantes",
+				error:
+					simpatizantesResponse.error ||
+					"No se pudieron obtener los simpatizantes",
 			};
 		}
 
@@ -292,7 +297,9 @@ class LocalDbService {
 		};
 	}
 
-	async getSimpatizantesByCiudad(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByCiudad(): Promise<
+		RespuestaAPI<Record<string, number>>
+	> {
 		const stats = await this.getStatistics();
 		return {
 			success: stats.success,
@@ -302,7 +309,9 @@ class LocalDbService {
 		};
 	}
 
-	async getSimpatizantesByEdad(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByEdad(): Promise<
+		RespuestaAPI<Record<string, number>>
+	> {
 		const stats = await this.getStatistics();
 		return {
 			success: stats.success,

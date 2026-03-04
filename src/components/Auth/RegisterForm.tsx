@@ -24,6 +24,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 		barrio: "",
 		password: "",
 		confirmPassword: "",
+		rol: "simpatizante", // por defecto
 	});
 
 	const [errors, setErrors] = useState<FormErrors>({});
@@ -52,7 +53,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 		else {
 			const age = calculateAge(new Date(formData.fechaNacimiento));
 			if (age < 18)
-				newErrors.fechaNacimiento = "Debes ser mayor de 18 años para registrarte";
+				newErrors.fechaNacimiento =
+					"Debes ser mayor de 18 años para registrarte";
 		}
 		if (!formData.genero) newErrors.genero = "Selecciona un género";
 		if (!formData.ciudad) newErrors.ciudad = "Selecciona una ciudad";
@@ -75,6 +77,25 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 
 	return (
 		<form className="space-y-6" onSubmit={handleSubmit}>
+			{/* Campo visible para seleccionar el rol (solo para pruebas/desarrollo) */}
+			<div>
+				<label
+					htmlFor="rol"
+					className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
+				>
+					Rol (solo pruebas)
+				</label>
+				<select
+					id="rol"
+					name="rol"
+					value={formData.rol}
+					onChange={handleChange}
+					className="input-field"
+				>
+					<option value="simpatizante">Simpatizante</option>
+					<option value="candidato">Candidato</option>
+				</select>
+			</div>
 			<div className="text-center mb-8">
 				<h2 className="font-playfair text-3xl font-bold text-slate-900 mb-2">
 					Registro de Simpatizante

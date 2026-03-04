@@ -6,7 +6,7 @@ import { useDashboard } from "../context/DashboardContext";
 
 const DashboardPage: React.FC = () => {
 	const navigate = useNavigate();
-	const { isAuthenticated, logout } = useAuth();
+	const { isAuthenticated, logout, user } = useAuth();
 	const { simpatizantes, loading, error, fetchSimpatizantes } = useDashboard();
 
 	const handleLogout = () => {
@@ -17,10 +17,12 @@ const DashboardPage: React.FC = () => {
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate("/login");
+		} else if (user?.rol !== "candidato") {
+			navigate("/");
 		}
-	}, [isAuthenticated, navigate]);
+	}, [isAuthenticated, user, navigate]);
 
-	if (!isAuthenticated) {
+	if (!isAuthenticated || user?.rol !== "candidato") {
 		return null;
 	}
 
@@ -28,7 +30,9 @@ const DashboardPage: React.FC = () => {
 		<div className="min-h-screen bg-gray-50">
 			<div className="bg-white border-b border-gray-200">
 				<div className="flex items-center justify-between p-6 max-w-7xl mx-auto">
-					<h1 className="text-2xl font-bold">Panel de Estadísticas de Campaña</h1>
+					<h1 className="text-2xl font-bold">
+						Panel de Estadísticas de Campaña
+					</h1>
 					<div className="flex items-center gap-3">
 						<button
 							onClick={() => navigate("/")}
@@ -58,7 +62,10 @@ const DashboardPage: React.FC = () => {
 			)}
 
 			{!loading && (
-				<Dashboard simpatizantes={simpatizantes} onFilterChange={fetchSimpatizantes} />
+				<Dashboard
+					simpatizantes={simpatizantes}
+					onFilterChange={fetchSimpatizantes}
+				/>
 			)}
 		</div>
 	);

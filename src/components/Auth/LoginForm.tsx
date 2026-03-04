@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading }) => {
 				<h2 className="font-playfair text-3xl font-bold text-slate-900 mb-2">
 					Ingresa a tu Cuenta
 				</h2>
-				<p className="text-slate-600">Accede a la plataforma electoral 2026</p>
+				<p className="text-slate-600">Accede a la campaña 2026</p>
 			</div>
 
 			<div>
@@ -154,7 +154,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading }) => {
 					href="/register"
 					className="text-red-600 font-bold hover:text-red-700 transition"
 				>
-					Regístrate para votar ahora
+					Regístrate como simpatizante
 				</a>
 			</p>
 		</form>

@@ -26,7 +26,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ stats }) => {
 
 		// Ciudad con menor apoyo (oportunidad de crecimiento)
 		const ciudadMenorApoyo = ciudades.reduce(
-			(min, [ciudad, cantidad]) => (cantidad < min.cantidad || min.cantidad === 0 ? { ciudad, cantidad } : min),
+			(min, [ciudad, cantidad]) => (cantidad < min.cantidad ? { ciudad, cantidad } : min),
 			{ ciudad: "", cantidad: Infinity },
 		);
 

@@ -323,6 +323,7 @@ class LocalDbService {
 	}
 
 	private getAgeRange(age: number): string {
+		if (age < 18) return "menor-18";
 		if (age >= 18 && age <= 25) return "18-25";
 		if (age >= 26 && age <= 35) return "26-35";
 		if (age >= 36 && age <= 45) return "36-45";

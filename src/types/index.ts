@@ -1,78 +1,53 @@
-// Tipos de Votante
-export interface Votante {
+// Tipos de Simpatizante (Posible Votante)
+export interface Simpatizante {
 	id: string;
 	nombre: string;
 	apellido: string;
 	cedula: string;
 	email: string;
+	telefono?: string;
 	fechaNacimiento: Date;
 	genero: "masculino" | "femenino" | "otro";
-	municipio: string;
+	ciudad: string;
+	barrio?: string;
 	password: string;
-	hasVoted: boolean;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
-export interface RegistroVotante {
+export interface RegistroSimpatizante {
 	nombre: string;
 	apellido: string;
 	cedula: string;
 	email: string;
+	telefono?: string;
 	fechaNacimiento: string;
 	genero: "masculino" | "femenino" | "otro";
-	municipio: string;
+	ciudad: string;
+	barrio?: string;
 	password: string;
 	confirmPassword: string;
 }
 
-// Tipos de Candidato
-export interface Candidato {
-	id: string;
-	nombre: string;
-	apellido: string;
-	partido: string;
-	plataforma: string;
-	photo?: string;
-	website?: string;
-	twitter?: string;
-	createdAt: Date;
-	updatedAt: Date;
+// Tipos de Estadísticas de Simpatizantes
+export interface EstadisticasSimpatizantes {
+	total_simpatizantes: number;
+	distribucion_por_ciudad: Record<string, number>;
+	distribucion_por_edad: Record<string, number>;
+	distribucion_por_genero: Record<string, number>;
 }
 
-// Tipos de Voto
-export interface Voto {
-	id: string;
-	votante_id: string;
-	candidato_id: string;
-	municipio: string;
-	timestamp: Date;
-	metadata?: {
-		navegador?: string;
-		dispositivo?: string;
-	};
-}
-
-// Tipos de Estadísticas
-export interface EstadisticasVoto {
-	total_votos: number;
-	participacion: number;
-	votos_por_candidato: Record<string, number>;
-	distribucion_geografica: Record<string, number>;
-}
-
-export interface ResultadoCandidato {
-	candidatoId: string;
-	votos: number;
+export interface EstadisticaCiudad {
+	ciudad: string;
+	cantidad: number;
 	porcentaje: string;
 }
 
 // Tipos de Filtros
 export interface FiltrosDashboard {
-	municipio: string;
+	ciudad: string;
 	genero: "masculino" | "femenino" | "otro" | "";
 	rango_edad: string;
-	partido: string;
 }
 
 // Tipos de Credenciales
@@ -92,28 +67,26 @@ export interface RespuestaAPI<T> {
 
 // Tipos de Contexto
 export interface AuthContextType {
-	user: Votante | null;
+	user: Simpatizante | null;
 	isAuthenticated: boolean;
 	loading: boolean;
 	error: string | null;
 	login: (credenciales: CredencialesLogin) => Promise<void>;
-	register: (datos: RegistroVotante) => Promise<void>;
+	register: (datos: RegistroSimpatizante) => Promise<void>;
 	logout: () => void;
 }
 
-export interface VotingContextType {
-	candidatos: Candidato[];
-	hasVoted: boolean;
+export interface SimpatizantesContextType {
+	simpatizantes: Simpatizante[];
 	loading: boolean;
 	error: string | null;
-	submitVote: (candidatoId: string) => Promise<void>;
-	fetchCandidatos: () => Promise<void>;
+	fetchSimpatizantes: () => Promise<void>;
 }
 
 export interface DashboardContextType {
-	votingData: Voto[];
-	estadisticas: EstadisticasVoto;
+	simpatizantes: Simpatizante[];
+	estadisticas: EstadisticasSimpatizantes;
 	loading: boolean;
 	error: string | null;
-	fetchVotingData: (filters?: FiltrosDashboard) => Promise<void>;
+	fetchSimpatizantes: (filters?: FiltrosDashboard) => Promise<void>;
 }

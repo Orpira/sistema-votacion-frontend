@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { DashboardContextType, Voto, EstadisticasVoto, FiltrosDashboard } from '../types/index';
+import { DashboardContextType, Simpatizante, EstadisticasSimpatizantes, FiltrosDashboard } from '../types/index';
 import dashboardService from '../services/dashboardService';
 import { useAuth } from './AuthContext';
 
@@ -11,12 +11,12 @@ interface DashboardProviderProps {
 
 export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  const [votingData, setVotingData] = useState<Voto[]>([]);
-  const [estadisticas, setEstadisticas] = useState<EstadisticasVoto>({
-    total_votos: 0,
-    participacion: 0,
-    votos_por_candidato: {},
-    distribucion_geografica: {}
+  const [simpatizantes, setSimpatizantes] = useState<Simpatizante[]>([]);
+  const [estadisticas, setEstadisticas] = useState<EstadisticasSimpatizantes>({
+    total_simpatizantes: 0,
+    distribucion_por_ciudad: {},
+    distribucion_por_edad: {},
+    distribucion_por_genero: {}
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,20 +24,20 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   // Cargar datos al montar el componente
   useEffect(() => {
     if (isAuthenticated) {
-      fetchVotingData();
+      fetchSimpatizantes();
     }
   }, [isAuthenticated]);
 
-  const fetchVotingData = async (filters?: FiltrosDashboard) => {
+  const fetchSimpatizantes = async (filters?: FiltrosDashboard) => {
     setLoading(true);
     setError(null);
     try {
-      // Obtener votos
-      const votesResponse = await dashboardService.getAllVotes(filters);
-      if (votesResponse.success && votesResponse.data) {
-        setVotingData(votesResponse.data);
+      // Obtener simpatizantes
+      const simpatizantesResponse = await dashboardService.getAllSimpatizantes(filters);
+      if (simpatizantesResponse.success && simpatizantesResponse.data) {
+        setSimpatizantes(simpatizantesResponse.data);
       } else {
-        setError(votesResponse.error || 'Error al cargar votos');
+        setError(simpatizantesResponse.error || 'Error al cargar simpatizantes');
       }
 
       // Obtener estadísticas
@@ -53,11 +53,11 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   };
 
   const value: DashboardContextType = {
-    votingData,
+    simpatizantes,
     estadisticas,
     loading,
     error,
-    fetchVotingData
+    fetchSimpatizantes
   };
 
   return (

@@ -1,7 +1,7 @@
 import {
 	CredencialesLogin,
-	RegistroVotante,
-	Votante,
+	RegistroSimpatizante,
+	Simpatizante,
 	RespuestaAPI,
 } from "../types/index";
 import localDbService from "./localDbService";
@@ -13,9 +13,9 @@ const USE_LOCAL_DB = true;
 
 class AuthService {
 	/**
-	 * Registra un nuevo votante
+	 * Registra un nuevo simpatizante
 	 */
-	async register(datos: RegistroVotante): Promise<RespuestaAPI<Votante>> {
+	async register(datos: RegistroSimpatizante): Promise<RespuestaAPI<Simpatizante>> {
 		if (USE_LOCAL_DB) {
 			return localDbService.register(datos);
 		}
@@ -48,7 +48,7 @@ class AuthService {
 	 */
 	async login(
 		credenciales: CredencialesLogin,
-	): Promise<RespuestaAPI<{ token: string; user: Votante }>> {
+	): Promise<RespuestaAPI<{ token: string; user: Simpatizante }>> {
 		if (USE_LOCAL_DB) {
 			return localDbService.login(credenciales);
 		}
@@ -116,7 +116,7 @@ class AuthService {
 	/**
 	 * Obtiene el usuario actual
 	 */
-	async getCurrentUser(): Promise<RespuestaAPI<Votante>> {
+	async getCurrentUser(): Promise<RespuestaAPI<Simpatizante>> {
 		if (USE_LOCAL_DB) {
 			return localDbService.getCurrentUser();
 		}

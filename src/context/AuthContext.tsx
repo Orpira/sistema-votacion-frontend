@@ -7,9 +7,9 @@ import React, {
 } from "react";
 import {
 	AuthContextType,
-	Votante,
+	Simpatizante,
 	CredencialesLogin,
-	RegistroVotante,
+	RegistroSimpatizante,
 } from "../types/index";
 import authService from "../services/authService";
 
@@ -20,7 +20,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const [user, setUser] = useState<Votante | null>(null);
+	const [user, setUser] = useState<Simpatizante | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		}
 	};
 
-	const register = async (datos: RegistroVotante) => {
+	const register = async (datos: RegistroSimpatizante) => {
 		setLoading(true);
 		setError(null);
 		try {

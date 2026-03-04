@@ -1,6 +1,6 @@
 import {
-	Voto,
-	EstadisticasVoto,
+	Simpatizante,
+	EstadisticasSimpatizantes,
 	RespuestaAPI,
 	FiltrosDashboard,
 } from "../types/index";
@@ -12,39 +12,26 @@ const API_BASE_URL =
 const USE_LOCAL_DB = true;
 
 class DashboardService {
-	async resetLocalData(): Promise<RespuestaAPI<null>> {
-		if (USE_LOCAL_DB) {
-			return localDbService.resetSimulationData();
-		}
-
-		return {
-			success: false,
-			message: "Operación no disponible",
-			error: "El reinicio local solo está disponible en modo simulación",
-		};
-	}
-
 	/**
-	 * Obtiene todos los votos (requiere autenticación)
+	 * Obtiene todos los simpatizantes (requiere autenticación)
 	 */
-	async getAllVotes(filters?: FiltrosDashboard): Promise<RespuestaAPI<Voto[]>> {
+	async getAllSimpatizantes(filters?: FiltrosDashboard): Promise<RespuestaAPI<Simpatizante[]>> {
 		if (USE_LOCAL_DB) {
-			return localDbService.getAllVotes(filters);
+			return localDbService.getAllSimpatizantes(filters);
 		}
 
 		try {
 			const queryParams = new URLSearchParams();
 
 			if (filters) {
-				if (filters.municipio)
-					queryParams.append("municipio", filters.municipio);
+				if (filters.ciudad)
+					queryParams.append("ciudad", filters.ciudad);
 				if (filters.genero) queryParams.append("genero", filters.genero);
 				if (filters.rango_edad)
 					queryParams.append("rango_edad", filters.rango_edad);
-				if (filters.partido) queryParams.append("partido", filters.partido);
 			}
 
-			const url = new URL(`${API_BASE_URL}/votes`);
+			const url = new URL(`${API_BASE_URL}/simpatizantes`);
 			url.search = queryParams.toString();
 
 			const response = await fetch(url.toString(), {
@@ -61,22 +48,22 @@ class DashboardService {
 		} catch (error) {
 			return {
 				success: false,
-				message: "Error al obtener votos",
+				message: "Error al obtener simpatizantes",
 				error: error instanceof Error ? error.message : "Error desconocido",
 			};
 		}
 	}
 
 	/**
-	 * Obtiene estadísticas generales de votación
+	 * Obtiene estadísticas generales de simpatizantes
 	 */
-	async getStatistics(): Promise<RespuestaAPI<EstadisticasVoto>> {
+	async getStatistics(): Promise<RespuestaAPI<EstadisticasSimpatizantes>> {
 		if (USE_LOCAL_DB) {
 			return localDbService.getStatistics();
 		}
 
 		try {
-			const response = await fetch(`${API_BASE_URL}/votes/statistics`, {
+			const response = await fetch(`${API_BASE_URL}/simpatizantes/statistics`, {
 				headers: {
 					Authorization: `Bearer ${authService.getToken()}`,
 				},
@@ -97,15 +84,15 @@ class DashboardService {
 	}
 
 	/**
-	 * Obtiene distribución de votos por municipio
+	 * Obtiene distribución de simpatizantes por ciudad
 	 */
-	async getVotesByMunicipios(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByCiudad(): Promise<RespuestaAPI<Record<string, number>>> {
 		if (USE_LOCAL_DB) {
-			return localDbService.getVotesByMunicipios();
+			return localDbService.getSimpatizantesByCiudad();
 		}
 
 		try {
-			const response = await fetch(`${API_BASE_URL}/votes/by-municipios`, {
+			const response = await fetch(`${API_BASE_URL}/simpatizantes/by-ciudad`, {
 				headers: {
 					Authorization: `Bearer ${authService.getToken()}`,
 				},
@@ -119,22 +106,22 @@ class DashboardService {
 		} catch (error) {
 			return {
 				success: false,
-				message: "Error al obtener votos por municipio",
+				message: "Error al obtener simpatizantes por ciudad",
 				error: error instanceof Error ? error.message : "Error desconocido",
 			};
 		}
 	}
 
 	/**
-	 * Obtiene distribución de votos por candidato
+	 * Obtiene distribución de simpatizantes por rango de edad
 	 */
-	async getVotesByCandidatos(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByEdad(): Promise<RespuestaAPI<Record<string, number>>> {
 		if (USE_LOCAL_DB) {
-			return localDbService.getVotesByCandidatos();
+			return localDbService.getSimpatizantesByEdad();
 		}
 
 		try {
-			const response = await fetch(`${API_BASE_URL}/votes/by-candidatos`, {
+			const response = await fetch(`${API_BASE_URL}/simpatizantes/by-edad`, {
 				headers: {
 					Authorization: `Bearer ${authService.getToken()}`,
 				},
@@ -148,68 +135,18 @@ class DashboardService {
 		} catch (error) {
 			return {
 				success: false,
-				message: "Error al obtener votos por candidato",
+				message: "Error al obtener simpatizantes por rango de edad",
 				error: error instanceof Error ? error.message : "Error desconocido",
 			};
 		}
 	}
 
 	/**
-	 * Obtiene distribución de votos por género
+	 * Exporta los datos de simpatizantes a CSV
 	 */
-	async getVotesByGender(): Promise<RespuestaAPI<Record<string, number>>> {
+	async exportSimpatizantesAsCSV(): Promise<Blob | null> {
 		try {
-			const response = await fetch(`${API_BASE_URL}/votes/by-gender`, {
-				headers: {
-					Authorization: `Bearer ${authService.getToken()}`,
-				},
-			});
-
-			if (!response.ok) {
-				throw new Error(`Error: ${response.statusText}`);
-			}
-
-			return await response.json();
-		} catch (error) {
-			return {
-				success: false,
-				message: "Error al obtener votos por género",
-				error: error instanceof Error ? error.message : "Error desconocido",
-			};
-		}
-	}
-
-	/**
-	 * Obtiene distribución de votos por rango de edad
-	 */
-	async getVotesByAgeRange(): Promise<RespuestaAPI<Record<string, number>>> {
-		try {
-			const response = await fetch(`${API_BASE_URL}/votes/by-age-range`, {
-				headers: {
-					Authorization: `Bearer ${authService.getToken()}`,
-				},
-			});
-
-			if (!response.ok) {
-				throw new Error(`Error: ${response.statusText}`);
-			}
-
-			return await response.json();
-		} catch (error) {
-			return {
-				success: false,
-				message: "Error al obtener votos por rango de edad",
-				error: error instanceof Error ? error.message : "Error desconocido",
-			};
-		}
-	}
-
-	/**
-	 * Exporta los datos de votación a CSV
-	 */
-	async exportVotesAsCSV(): Promise<Blob | null> {
-		try {
-			const response = await fetch(`${API_BASE_URL}/votes/export/csv`, {
+			const response = await fetch(`${API_BASE_URL}/simpatizantes/export/csv`, {
 				headers: {
 					Authorization: `Bearer ${authService.getToken()}`,
 				},
@@ -221,17 +158,17 @@ class DashboardService {
 
 			return await response.blob();
 		} catch (error) {
-			console.error("Error al exportar votos:", error);
+			console.error("Error al exportar simpatizantes:", error);
 			return null;
 		}
 	}
 
 	/**
-	 * Exporta los datos de votación a PDF
+	 * Exporta los datos de simpatizantes a PDF
 	 */
-	async exportVotesAsPDF(): Promise<Blob | null> {
+	async exportSimpatizantesAsPDF(): Promise<Blob | null> {
 		try {
-			const response = await fetch(`${API_BASE_URL}/votes/export/pdf`, {
+			const response = await fetch(`${API_BASE_URL}/simpatizantes/export/pdf`, {
 				headers: {
 					Authorization: `Bearer ${authService.getToken()}`,
 				},
@@ -243,7 +180,7 @@ class DashboardService {
 
 			return await response.blob();
 		} catch (error) {
-			console.error("Error al exportar votos:", error);
+			console.error("Error al exportar simpatizantes:", error);
 			return null;
 		}
 	}

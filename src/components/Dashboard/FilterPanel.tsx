@@ -21,10 +21,9 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilter, currentFilters }) =
 
   const handleReset = () => {
     const resetFilters: FiltrosDashboard = {
-      municipio: "",
+      ciudad: "",
       genero: "",
       rango_edad: "",
-      partido: "",
     };
     setFilters(resetFilters);
     onFilter(resetFilters);
@@ -36,13 +35,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilter, currentFilters }) =
 
       <div className="space-y-3">
         <div>
-          <label htmlFor="municipio" className="block text-sm font-medium text-gray-700">Municipio</label>
-          <select id="municipio" name="municipio" value={filters.municipio} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300">
-            <option value="">Todos</option>
-            <option value="bogota">Bogotá</option>
-            <option value="medellin">Medellín</option>
-            <option value="cali">Cali</option>
-            <option value="barranquilla">Barranquilla</option>
+          <label htmlFor="ciudad" className="block text-sm font-medium text-gray-700">Ciudad</label>
+          <select id="ciudad" name="ciudad" value={filters.ciudad} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300">
+            <option value="">Todas</option>
+            <option value="bucaramanga">Bucaramanga</option>
+            <option value="floridablanca">Floridablanca</option>
+            <option value="giron">Girón</option>
+            <option value="piedecuesta">Piedecuesta</option>
+            <option value="barrancabermeja">Barrancabermeja</option>
+            <option value="san-gil">San Gil</option>
+            <option value="socorro">Socorro</option>
+            <option value="barbosa">Barbosa</option>
+            <option value="otra">Otra ciudad</option>
           </select>
         </div>
 
@@ -65,17 +69,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilter, currentFilters }) =
             <option value="36-45">36-45 años</option>
             <option value="46-55">46-55 años</option>
             <option value="56+">56+ años</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="partido" className="block text-sm font-medium text-gray-700">Partido</label>
-          <select id="partido" name="partido" value={filters.partido} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300">
-            <option value="">Todos</option>
-            <option value="partido-a">Partido A</option>
-            <option value="partido-b">Partido B</option>
-            <option value="partido-c">Partido C</option>
-            <option value="independiente">Independiente</option>
           </select>
         </div>
 

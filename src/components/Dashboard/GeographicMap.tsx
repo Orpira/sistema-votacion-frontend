@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 interface MapItem {
-  municipio: string;
-  votos: number;
+  ciudad: string;
+  simpatizantes: number;
   porcentaje: string;
 }
 
@@ -19,58 +19,59 @@ const GeographicMap: React.FC<GeographicMapProps> = ({ data }) => {
   useEffect(() => {
     if (data) {
       const sortedData = Object.entries(data)
-        .map(([municipio, count]) => ({ municipio, votos: count, porcentaje: "0" }))
-        .sort((a, b) => b.votos - a.votos);
+        .map(([ciudad, count]) => ({ ciudad, simpatizantes: count, porcentaje: "0" }))
+        .sort((a, b) => b.simpatizantes - a.simpatizantes);
 
-      const total = sortedData.reduce((sum, item) => sum + item.votos, 0);
+      const total = sortedData.reduce((sum, item) => sum + item.simpatizantes, 0);
       setMapData(
         sortedData.map((item) => ({
           ...item,
-          porcentaje: total > 0 ? ((item.votos / total) * 100).toFixed(2) : "0",
+          porcentaje: total > 0 ? ((item.simpatizantes / total) * 100).toFixed(2) : "0",
         }))
       );
     }
   }, [data]);
 
-  const maxVotos = Math.max(...mapData.map((item) => item.votos), 1);
+  const maxSimpatizantes = Math.max(...mapData.map((item) => item.simpatizantes), 1);
 
   return (
     <div className="space-y-4">
       <div className="bg-white p-4 rounded shadow">
+        <h4 className="font-semibold mb-3">Simpatizantes por Ciudad</h4>
         <div className="space-y-3">
           {mapData.length > 0 ? (
             mapData.map((item, index) => (
               <div key={index}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-medium text-sm">{item.municipio}</span>
-                  <span className="text-xs text-gray-600">{item.votos} ({item.porcentaje}%)</span>
+                  <span className="font-medium text-sm capitalize">{item.ciudad.replace("-", " ")}</span>
+                  <span className="text-xs text-gray-600">{item.simpatizantes} ({item.porcentaje}%)</span>
                 </div>
                 <div className="h-6 bg-gray-100 rounded overflow-hidden">
                   <div
                     style={{
-                      width: `${(item.votos / maxVotos) * 100}%`,
+                      width: `${(item.simpatizantes / maxSimpatizantes) * 100}%`,
                       backgroundColor: getColorForIndex(index),
                     }}
                     className="h-full flex items-center justify-end px-2 text-white text-xs font-semibold"
                   >
-                    {(item.votos / maxVotos) * 100 > 10 && item.porcentaje}%
+                    {(item.simpatizantes / maxSimpatizantes) * 100 > 10 && item.porcentaje}%
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-600">No hay datos disponibles</p>
+            <p className="text-gray-600">No hay datos disponibles. ¡Registra simpatizantes para ver estadísticas!</p>
           )}
         </div>
       </div>
 
       <div className="bg-white p-4 rounded shadow">
-        <h4 className="font-semibold mb-3">Distribución por Municipio</h4>
+        <h4 className="font-semibold mb-3">Distribución por Ciudad</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {mapData.map((item, index) => (
             <div key={index} className="flex items-center gap-2 text-sm">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: getColorForIndex(index) }}></div>
-              <span>{item.municipio}: {item.votos} votos</span>
+              <span className="capitalize">{item.ciudad.replace("-", " ")}: {item.simpatizantes} simpatizantes</span>
             </div>
           ))}
         </div>

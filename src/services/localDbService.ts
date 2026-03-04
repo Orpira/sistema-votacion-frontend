@@ -1,26 +1,22 @@
 import {
-	Candidato,
 	CredencialesLogin,
-	EstadisticasVoto,
+	EstadisticasSimpatizantes,
 	FiltrosDashboard,
-	RegistroVotante,
+	RegistroSimpatizante,
 	RespuestaAPI,
-	Votante,
-	Voto,
+	Simpatizante,
 } from "../types/index";
 
 const STORAGE_KEYS = {
-	users: "sv_users",
-	votes: "sv_votes",
-	candidates: "sv_candidates",
+	simpatizantes: "sv_simpatizantes",
 	authUserIdLocal: "sv_auth_user_id_local",
 	authUserIdSession: "sv_auth_user_id_session",
 	authTokenLocal: "authToken",
 	authTokenSession: "authToken",
 };
 
-type StoredVotante = Omit<
-	Votante,
+type StoredSimpatizante = Omit<
+	Simpatizante,
 	"fechaNacimiento" | "createdAt" | "updatedAt"
 > & {
 	fechaNacimiento: string;
@@ -28,68 +24,14 @@ type StoredVotante = Omit<
 	updatedAt: string;
 };
 
-type StoredVoto = Omit<Voto, "timestamp"> & {
-	timestamp: string;
-};
-
 class LocalDbService {
 	private ensureSeedData(): void {
-		const candidates = this.readJSON<Candidato[] | null>(
-			STORAGE_KEYS.candidates,
+		const simpatizantes = this.readJSON<StoredSimpatizante[] | null>(
+			STORAGE_KEYS.simpatizantes,
 			null,
 		);
-		if (!candidates || candidates.length === 0) {
-			const now = new Date().toISOString();
-			const defaultCandidates: Candidato[] = [
-				{
-					id: "camilo-torres",
-					nombre: "Camilo",
-					apellido: "Torres",
-					partido: "Pacto Histórico",
-					plataforma:
-						"Justicia social, transparencia pública y desarrollo territorial para Santander.",
-					photo: "/images/camilo-portrait.png",
-					website: "https://example.com/camilo",
-					twitter: "https://x.com/",
-					createdAt: new Date(now),
-					updatedAt: new Date(now),
-				},
-				{
-					id: "andrea-ruiz",
-					nombre: "Andrea",
-					apellido: "Ruiz",
-					partido: "Movimiento Ciudadano",
-					plataforma:
-						"Empleo joven, educación digital y seguridad ciudadana con enfoque preventivo.",
-					createdAt: new Date(now),
-					updatedAt: new Date(now),
-				},
-				{
-					id: "jorge-perez",
-					nombre: "Jorge",
-					apellido: "Pérez",
-					partido: "Alianza Regional",
-					plataforma:
-						"Infraestructura, salud rural y fortalecimiento de la economía local.",
-					createdAt: new Date(now),
-					updatedAt: new Date(now),
-				},
-			];
-
-			this.writeJSON(STORAGE_KEYS.candidates, defaultCandidates);
-		}
-
-		const users = this.readJSON<StoredVotante[] | null>(
-			STORAGE_KEYS.users,
-			null,
-		);
-		if (!users) {
-			this.writeJSON(STORAGE_KEYS.users, []);
-		}
-
-		const votes = this.readJSON<StoredVoto[] | null>(STORAGE_KEYS.votes, null);
-		if (!votes) {
-			this.writeJSON(STORAGE_KEYS.votes, []);
+		if (!simpatizantes) {
+			this.writeJSON(STORAGE_KEYS.simpatizantes, []);
 		}
 	}
 
@@ -107,7 +49,7 @@ class LocalDbService {
 		localStorage.setItem(key, JSON.stringify(value));
 	}
 
-	private toVotante(stored: StoredVotante): Votante {
+	private toSimpatizante(stored: StoredSimpatizante): Simpatizante {
 		return {
 			...stored,
 			fechaNacimiento: new Date(stored.fechaNacimiento),
@@ -116,30 +58,18 @@ class LocalDbService {
 		};
 	}
 
-	private toStoredVotante(votante: Votante): StoredVotante {
+	private toStoredSimpatizante(simpatizante: Simpatizante): StoredSimpatizante {
 		return {
-			...votante,
-			fechaNacimiento: votante.fechaNacimiento.toISOString(),
-			createdAt: votante.createdAt.toISOString(),
-			updatedAt: votante.updatedAt.toISOString(),
+			...simpatizante,
+			fechaNacimiento: simpatizante.fechaNacimiento.toISOString(),
+			createdAt: simpatizante.createdAt.toISOString(),
+			updatedAt: simpatizante.updatedAt.toISOString(),
 		};
 	}
 
-	private toVoto(stored: StoredVoto): Voto {
-		return {
-			...stored,
-			timestamp: new Date(stored.timestamp),
-		};
-	}
-
-	private getUsersStored(): StoredVotante[] {
+	private getSimpatizantesStored(): StoredSimpatizante[] {
 		this.ensureSeedData();
-		return this.readJSON<StoredVotante[]>(STORAGE_KEYS.users, []);
-	}
-
-	private getVotesStored(): StoredVoto[] {
-		this.ensureSeedData();
-		return this.readJSON<StoredVoto[]>(STORAGE_KEYS.votes, []);
+		return this.readJSON<StoredSimpatizante[]>(STORAGE_KEYS.simpatizantes, []);
 	}
 
 	private getCurrentUserId(): string | null {
@@ -167,65 +97,65 @@ class LocalDbService {
 		sessionStorage.removeItem(STORAGE_KEYS.authTokenSession);
 	}
 
-	async register(datos: RegistroVotante): Promise<RespuestaAPI<Votante>> {
+	async register(datos: RegistroSimpatizante): Promise<RespuestaAPI<Simpatizante>> {
 		this.ensureSeedData();
-		const users = this.getUsersStored();
+		const simpatizantes = this.getSimpatizantesStored();
 
-		const cedulaExists = users.some((user) => user.cedula === datos.cedula);
+		const cedulaExists = simpatizantes.some((s) => s.cedula === datos.cedula);
 		if (cedulaExists) {
 			return {
 				success: false,
 				message: "Registro fallido",
-				error: "Ya existe un usuario con esa cédula",
+				error: "Ya existe un simpatizante con esa cédula",
 			};
 		}
 
-		const emailExists = users.some((user) => user.email === datos.email);
+		const emailExists = simpatizantes.some((s) => s.email === datos.email);
 		if (emailExists) {
 			return {
 				success: false,
 				message: "Registro fallido",
-				error: "Ya existe un usuario con ese correo",
+				error: "Ya existe un simpatizante con ese correo",
 			};
 		}
 
 		const now = new Date();
-		const newUser: Votante = {
-			id: `votante-${Date.now()}`,
+		const newSimpatizante: Simpatizante = {
+			id: `simpatizante-${Date.now()}`,
 			nombre: datos.nombre,
 			apellido: datos.apellido,
 			cedula: datos.cedula,
 			email: datos.email,
+			telefono: datos.telefono,
 			fechaNacimiento: new Date(datos.fechaNacimiento),
 			genero: datos.genero,
-			municipio: datos.municipio,
+			ciudad: datos.ciudad,
+			barrio: datos.barrio,
 			password: datos.password,
-			hasVoted: false,
 			createdAt: now,
 			updatedAt: now,
 		};
 
-		users.push(this.toStoredVotante(newUser));
-		this.writeJSON(STORAGE_KEYS.users, users);
+		simpatizantes.push(this.toStoredSimpatizante(newSimpatizante));
+		this.writeJSON(STORAGE_KEYS.simpatizantes, simpatizantes);
 
 		return {
 			success: true,
-			message: "Usuario registrado correctamente",
-			data: newUser,
+			message: "Simpatizante registrado correctamente",
+			data: newSimpatizante,
 		};
 	}
 
 	async login(
 		credenciales: CredencialesLogin,
-	): Promise<RespuestaAPI<{ token: string; user: Votante }>> {
+	): Promise<RespuestaAPI<{ token: string; user: Simpatizante }>> {
 		this.ensureSeedData();
-		const users = this.getUsersStored();
-		const votes = this.getVotesStored();
+		const simpatizantes = this.getSimpatizantesStored();
 
-		const found = users.find(
-			(user) =>
-				user.cedula === credenciales.cedula &&
-				user.password === credenciales.password,
+		const found = simpatizantes.find(
+			(s) =>
+				s.cedula === credenciales.cedula &&
+				s.password === credenciales.password,
 		);
 
 		if (!found) {
@@ -236,9 +166,8 @@ class LocalDbService {
 			};
 		}
 
-		found.hasVoted = votes.some((vote) => vote.votante_id === found.id);
 		found.updatedAt = new Date().toISOString();
-		this.writeJSON(STORAGE_KEYS.users, users);
+		this.writeJSON(STORAGE_KEYS.simpatizantes, simpatizantes);
 
 		const token = `local-token-${found.id}`;
 		if (credenciales.rememberMe) {
@@ -258,12 +187,12 @@ class LocalDbService {
 			message: "Inicio de sesión exitoso",
 			data: {
 				token,
-				user: this.toVotante(found),
+				user: this.toSimpatizante(found),
 			},
 		};
 	}
 
-	async getCurrentUser(): Promise<RespuestaAPI<Votante>> {
+	async getCurrentUser(): Promise<RespuestaAPI<Simpatizante>> {
 		this.ensureSeedData();
 		const userId = this.getCurrentUserId();
 		if (!userId) {
@@ -274,143 +203,37 @@ class LocalDbService {
 			};
 		}
 
-		const users = this.getUsersStored();
-		const found = users.find((user) => user.id === userId);
+		const simpatizantes = this.getSimpatizantesStored();
+		const found = simpatizantes.find((s) => s.id === userId);
 		if (!found) {
 			return {
 				success: false,
 				message: "Usuario no encontrado",
-				error: "No se encontró el usuario en la base local",
+				error: "No se encontró el simpatizante en la base local",
 			};
 		}
 
 		return {
 			success: true,
 			message: "Usuario actual obtenido",
-			data: this.toVotante(found),
+			data: this.toSimpatizante(found),
 		};
 	}
 
-	async getCandidatos(): Promise<RespuestaAPI<Candidato[]>> {
+	async getAllSimpatizantes(filters?: FiltrosDashboard): Promise<RespuestaAPI<Simpatizante[]>> {
 		this.ensureSeedData();
-		const candidates = this.readJSON<Candidato[]>(STORAGE_KEYS.candidates, []);
-		return {
-			success: true,
-			message: "Candidatos obtenidos",
-			data: candidates,
-		};
-	}
+		const simpatizantes = this.getSimpatizantesStored();
 
-	async checkUserVoteStatus(): Promise<RespuestaAPI<{ hasVoted: boolean }>> {
-		this.ensureSeedData();
-		const userId = this.getCurrentUserId();
-		if (!userId) {
-			return {
-				success: false,
-				message: "No autenticado",
-				error: "No hay usuario autenticado",
-			};
-		}
-
-		const votes = this.getVotesStored();
-		return {
-			success: true,
-			message: "Estado de voto consultado",
-			data: { hasVoted: votes.some((vote) => vote.votante_id === userId) },
-		};
-	}
-
-	async submitVote(
-		candidatoId: string,
-		metadata?: Voto["metadata"],
-	): Promise<RespuestaAPI<Voto>> {
-		this.ensureSeedData();
-		const userId = this.getCurrentUserId();
-		if (!userId) {
-			return {
-				success: false,
-				message: "No autenticado",
-				error: "Debes iniciar sesión para votar",
-			};
-		}
-
-		const votes = this.getVotesStored();
-		if (votes.some((vote) => vote.votante_id === userId)) {
-			return {
-				success: false,
-				message: "Voto rechazado",
-				error: "Este usuario ya votó",
-			};
-		}
-
-		const candidates = this.readJSON<Candidato[]>(STORAGE_KEYS.candidates, []);
-		const candidateExists = candidates.some(
-			(candidate) => candidate.id === candidatoId,
-		);
-		if (!candidateExists) {
-			return {
-				success: false,
-				message: "Voto rechazado",
-				error: "El candidato seleccionado no existe",
-			};
-		}
-
-		const users = this.getUsersStored();
-		const user = users.find((item) => item.id === userId);
-		if (!user) {
-			return {
-				success: false,
-				message: "Voto rechazado",
-				error: "No se encontró el usuario votante",
-			};
-		}
-
-		const vote: Voto = {
-			id: `voto-${Date.now()}`,
-			votante_id: userId,
-			candidato_id: candidatoId,
-			municipio: user.municipio,
-			timestamp: new Date(),
-			metadata,
-		};
-
-		votes.push({ ...vote, timestamp: vote.timestamp.toISOString() });
-		this.writeJSON(STORAGE_KEYS.votes, votes);
-
-		user.hasVoted = true;
-		user.updatedAt = new Date().toISOString();
-		this.writeJSON(STORAGE_KEYS.users, users);
-
-		return {
-			success: true,
-			message: "Voto registrado correctamente",
-			data: vote,
-		};
-	}
-
-	async getAllVotes(filters?: FiltrosDashboard): Promise<RespuestaAPI<Voto[]>> {
-		this.ensureSeedData();
-		const votes = this.getVotesStored();
-		const users = this.getUsersStored();
-		const candidates = this.readJSON<Candidato[]>(STORAGE_KEYS.candidates, []);
-
-		const filtered = votes.filter((vote) => {
+		const filtered = simpatizantes.filter((s) => {
 			if (!filters) return true;
 
-			const user = users.find((item) => item.id === vote.votante_id);
-			const candidate = candidates.find(
-				(item) => item.id === vote.candidato_id,
-			);
-
-			if (filters.municipio && vote.municipio !== filters.municipio)
+			if (filters.ciudad && s.ciudad !== filters.ciudad)
 				return false;
-			if (filters.genero && user && user.genero !== filters.genero)
-				return false;
-			if (filters.partido && candidate && candidate.partido !== filters.partido)
+			if (filters.genero && s.genero !== filters.genero)
 				return false;
 
-			if (filters.rango_edad && user) {
-				const edad = this.calculateAge(new Date(user.fechaNacimiento));
+			if (filters.rango_edad) {
+				const edad = this.calculateAge(new Date(s.fechaNacimiento));
 				if (!this.inAgeRange(edad, filters.rango_edad)) return false;
 			}
 
@@ -419,86 +242,73 @@ class LocalDbService {
 
 		return {
 			success: true,
-			message: "Votos obtenidos",
-			data: filtered.map((vote) => this.toVoto(vote)),
+			message: "Simpatizantes obtenidos",
+			data: filtered.map((s) => this.toSimpatizante(s)),
 		};
 	}
 
-	async getStatistics(): Promise<RespuestaAPI<EstadisticasVoto>> {
-		const votesResponse = await this.getAllVotes();
-		if (!votesResponse.success || !votesResponse.data) {
+	async getStatistics(): Promise<RespuestaAPI<EstadisticasSimpatizantes>> {
+		const simpatizantesResponse = await this.getAllSimpatizantes();
+		if (!simpatizantesResponse.success || !simpatizantesResponse.data) {
 			return {
 				success: false,
 				message: "Error al calcular estadísticas",
-				error: votesResponse.error || "No se pudieron obtener los votos",
+				error: simpatizantesResponse.error || "No se pudieron obtener los simpatizantes",
 			};
 		}
 
-		const votes = votesResponse.data;
-		const users = this.getUsersStored();
-		const totalVotos = votes.length;
+		const simpatizantes = simpatizantesResponse.data;
+		const totalSimpatizantes = simpatizantes.length;
 
-		const votosPorCandidato: Record<string, number> = {};
-		const distribucionGeografica: Record<string, number> = {};
+		const distribucionPorCiudad: Record<string, number> = {};
+		const distribucionPorEdad: Record<string, number> = {};
+		const distribucionPorGenero: Record<string, number> = {};
 
-		votes.forEach((vote) => {
-			votosPorCandidato[vote.candidato_id] =
-				(votosPorCandidato[vote.candidato_id] || 0) + 1;
-			distribucionGeografica[vote.municipio] =
-				(distribucionGeografica[vote.municipio] || 0) + 1;
+		simpatizantes.forEach((s) => {
+			// Por ciudad
+			distribucionPorCiudad[s.ciudad] =
+				(distribucionPorCiudad[s.ciudad] || 0) + 1;
+
+			// Por género
+			distribucionPorGenero[s.genero] =
+				(distribucionPorGenero[s.genero] || 0) + 1;
+
+			// Por rango de edad
+			const edad = this.calculateAge(s.fechaNacimiento);
+			const rangoEdad = this.getAgeRange(edad);
+			distribucionPorEdad[rangoEdad] =
+				(distribucionPorEdad[rangoEdad] || 0) + 1;
 		});
-
-		const participacion =
-			users.length > 0 ? (totalVotos / users.length) * 100 : 0;
 
 		return {
 			success: true,
 			message: "Estadísticas obtenidas",
 			data: {
-				total_votos: totalVotos,
-				participacion,
-				votos_por_candidato: votosPorCandidato,
-				distribucion_geografica: distribucionGeografica,
+				total_simpatizantes: totalSimpatizantes,
+				distribucion_por_ciudad: distribucionPorCiudad,
+				distribucion_por_edad: distribucionPorEdad,
+				distribucion_por_genero: distribucionPorGenero,
 			},
 		};
 	}
 
-	async getVotesByMunicipios(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByCiudad(): Promise<RespuestaAPI<Record<string, number>>> {
 		const stats = await this.getStatistics();
 		return {
 			success: stats.success,
-			message: stats.success ? "Distribución por municipio" : "Error",
-			data: stats.data?.distribucion_geografica,
+			message: stats.success ? "Distribución por ciudad" : "Error",
+			data: stats.data?.distribucion_por_ciudad,
 			error: stats.error,
 		};
 	}
 
-	async getVotesByCandidatos(): Promise<RespuestaAPI<Record<string, number>>> {
+	async getSimpatizantesByEdad(): Promise<RespuestaAPI<Record<string, number>>> {
 		const stats = await this.getStatistics();
 		return {
 			success: stats.success,
-			message: stats.success ? "Distribución por candidato" : "Error",
-			data: stats.data?.votos_por_candidato,
+			message: stats.success ? "Distribución por edad" : "Error",
+			data: stats.data?.distribucion_por_edad,
 			error: stats.error,
-		};
-	}
-
-	async resetSimulationData(): Promise<RespuestaAPI<null>> {
-		this.ensureSeedData();
-
-		this.writeJSON(STORAGE_KEYS.votes, []);
-
-		const users = this.getUsersStored().map((user) => ({
-			...user,
-			hasVoted: false,
-			updatedAt: new Date().toISOString(),
-		}));
-		this.writeJSON(STORAGE_KEYS.users, users);
-
-		return {
-			success: true,
-			message: "Datos de simulación reiniciados",
-			data: null,
 		};
 	}
 
@@ -510,6 +320,14 @@ class LocalDbService {
 			age--;
 		}
 		return age;
+	}
+
+	private getAgeRange(age: number): string {
+		if (age >= 18 && age <= 25) return "18-25";
+		if (age >= 26 && age <= 35) return "26-35";
+		if (age >= 36 && age <= 45) return "36-45";
+		if (age >= 46 && age <= 55) return "46-55";
+		return "56+";
 	}
 
 	private inAgeRange(age: number, range: string): boolean {

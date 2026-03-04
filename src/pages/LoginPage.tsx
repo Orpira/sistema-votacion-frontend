@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
         setLocalError(null);
         try {
             await login(credenciales);
-            navigate("/voting");
+            navigate("/dashboard");
         } catch (err) {
             setLocalError(err instanceof Error ? err.message : "Error al iniciar sesión");
         }
@@ -23,9 +23,9 @@ const LoginPage: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-red-50 to-amber-50 p-4">
             <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border-t-4 border-red-600">
                 <div className="mb-8 text-center">
-                    <div className="text-4xl mb-4">🗳️</div>
-                    <h1 className="font-playfair text-3xl font-bold text-slate-900">Plataforma Electoral</h1>
-                    <p className="text-slate-600 mt-2">Proceso democrático 2026</p>
+                    <div className="text-4xl mb-4">✊</div>
+                    <h1 className="font-playfair text-3xl font-bold text-slate-900">Campaña Camilo Torres</h1>
+                    <p className="text-slate-600 mt-2">Sistema de Simpatizantes 2026</p>
                 </div>
 
                 {(error || localError) && (
@@ -38,15 +38,15 @@ const LoginPage: React.FC = () => {
                 <LoginForm onSubmit={handleLogin} loading={loading} />
 
                 <div className="mt-6 pt-6 border-t border-slate-200 text-center text-sm text-slate-600">
-                    ¿Eres nuevo en la plataforma?{' '}
+                    ¿Aún no te has registrado?{' '}
                     <a href="/register" className="text-red-600 font-bold hover:text-red-700 transition">
-                        Regístrate aquí
+                        Únete a la campaña
                     </a>
                 </div>
 
                 <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
                     <p className="text-xs text-slate-600 text-center leading-relaxed">
-                        🔐 Tu información es completamente segura y protegida bajo los estándares de privacidad electoral.
+                        🔐 Tu información es completamente segura y protegida bajo los estándares de privacidad.
                     </p>
                 </div>
             </div>

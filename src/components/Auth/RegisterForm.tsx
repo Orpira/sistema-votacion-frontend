@@ -1,9 +1,9 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { calculateAge } from "../../utils/validation";
-import { RegistroVotante } from "../../types/index";
+import { RegistroSimpatizante } from "../../types/index";
 
 interface RegisterFormProps {
-	onSubmit: (data: RegistroVotante) => Promise<void>;
+	onSubmit: (data: RegistroSimpatizante) => Promise<void>;
 	loading: boolean;
 }
 
@@ -12,14 +12,16 @@ interface FormErrors {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
-	const [formData, setFormData] = useState<RegistroVotante>({
+	const [formData, setFormData] = useState<RegistroSimpatizante>({
 		nombre: "",
 		apellido: "",
 		cedula: "",
 		email: "",
+		telefono: "",
 		fechaNacimiento: "",
 		genero: "masculino",
-		municipio: "",
+		ciudad: "",
+		barrio: "",
 		password: "",
 		confirmPassword: "",
 	});
@@ -50,10 +52,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 		else {
 			const age = calculateAge(new Date(formData.fechaNacimiento));
 			if (age < 18)
-				newErrors.fechaNacimiento = "Debes ser mayor de 18 años para votar";
+				newErrors.fechaNacimiento = "Debes ser mayor de 18 años para registrarte";
 		}
 		if (!formData.genero) newErrors.genero = "Selecciona un género";
-		if (!formData.municipio) newErrors.municipio = "Selecciona un municipio";
+		if (!formData.ciudad) newErrors.ciudad = "Selecciona una ciudad";
 		if (!formData.password) newErrors.password = "La contraseña es requerida";
 		if (formData.password.length < 8)
 			newErrors.password = "La contraseña debe tener al menos 8 caracteres";
@@ -75,10 +77,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 		<form className="space-y-6" onSubmit={handleSubmit}>
 			<div className="text-center mb-8">
 				<h2 className="font-playfair text-3xl font-bold text-slate-900 mb-2">
-					Únete a la Plataforma Electoral
+					Registro de Simpatizante
 				</h2>
 				<p className="text-slate-600">
-					Registra tu información y participa en el proceso 2026
+					Completa tu información para unirte a la campaña
 				</p>
 			</div>
 
@@ -153,27 +155,47 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 				)}
 			</div>
 
-			<div>
-				<label
-					htmlFor="email"
-					className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
-				>
-					Email
-				</label>
-				<input
-					type="email"
-					id="email"
-					name="email"
-					value={formData.email}
-					onChange={handleChange}
-					className={`input-field ${errors.email ? "border-red-600 focus:ring-red-500" : ""}`}
-					placeholder="tu@email.com"
-				/>
-				{errors.email && (
-					<p className="mt-2 text-sm font-medium text-red-600">
-						✗ {errors.email}
-					</p>
-				)}
+			<div className="grid grid-cols-2 gap-4">
+				<div>
+					<label
+						htmlFor="email"
+						className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
+					>
+						Email
+					</label>
+					<input
+						type="email"
+						id="email"
+						name="email"
+						value={formData.email}
+						onChange={handleChange}
+						className={`input-field ${errors.email ? "border-red-600 focus:ring-red-500" : ""}`}
+						placeholder="tu@email.com"
+					/>
+					{errors.email && (
+						<p className="mt-2 text-sm font-medium text-red-600">
+							✗ {errors.email}
+						</p>
+					)}
+				</div>
+
+				<div>
+					<label
+						htmlFor="telefono"
+						className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
+					>
+						Teléfono (Opcional)
+					</label>
+					<input
+						type="tel"
+						id="telefono"
+						name="telefono"
+						value={formData.telefono}
+						onChange={handleChange}
+						className="input-field"
+						placeholder="Tu teléfono"
+					/>
+				</div>
 			</div>
 
 			<div>
@@ -227,30 +249,53 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 
 				<div>
 					<label
-						htmlFor="municipio"
+						htmlFor="ciudad"
 						className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
 					>
-						Municipio
+						Ciudad
 					</label>
 					<select
-						id="municipio"
-						name="municipio"
-						value={formData.municipio}
+						id="ciudad"
+						name="ciudad"
+						value={formData.ciudad}
 						onChange={handleChange}
-						className={`input-field ${errors.municipio ? "border-red-600 focus:ring-red-500" : ""}`}
+						className={`input-field ${errors.ciudad ? "border-red-600 focus:ring-red-500" : ""}`}
 					>
 						<option value="">Seleccionar</option>
-						<option value="bogota">Bogotá</option>
-						<option value="medellin">Medellín</option>
-						<option value="cali">Cali</option>
-						<option value="barranquilla">Barranquilla</option>
+						<option value="bucaramanga">Bucaramanga</option>
+						<option value="floridablanca">Floridablanca</option>
+						<option value="giron">Girón</option>
+						<option value="piedecuesta">Piedecuesta</option>
+						<option value="barrancabermeja">Barrancabermeja</option>
+						<option value="san-gil">San Gil</option>
+						<option value="socorro">Socorro</option>
+						<option value="barbosa">Barbosa</option>
+						<option value="otra">Otra ciudad de Santander</option>
 					</select>
-					{errors.municipio && (
+					{errors.ciudad && (
 						<p className="mt-2 text-sm font-medium text-red-600">
-							✗ {errors.municipio}
+							✗ {errors.ciudad}
 						</p>
 					)}
 				</div>
+			</div>
+
+			<div>
+				<label
+					htmlFor="barrio"
+					className="block text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide"
+				>
+					Barrio (Opcional)
+				</label>
+				<input
+					type="text"
+					id="barrio"
+					name="barrio"
+					value={formData.barrio}
+					onChange={handleChange}
+					className="input-field"
+					placeholder="Tu barrio"
+				/>
 			</div>
 
 			<div>
@@ -304,7 +349,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, loading }) => {
 				className="btn-primary w-full py-4 text-lg mt-8"
 				disabled={loading}
 			>
-				{loading ? "Registrando..." : "Registrarse para Votar"}
+				{loading ? "Registrando..." : "Registrarme como Simpatizante"}
 			</button>
 
 			<p className="text-center text-slate-700 font-medium">

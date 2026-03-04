@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
 {/* Campaign Banner featuring candidate */}
 		<div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white py-4 px-4 text-center">
 			<p className="text-sm md:text-base font-bold uppercase tracking-widest">
-				🗳️ Proceso Electoral Histórico 2026 • Camilo Torres - Justicia por Santander
+				✊ Campaña 2026 • Camilo Torres - Justicia por Santander • ¡Únete al cambio!
 				</p>
 			</div>
 
@@ -45,20 +45,20 @@ const HomePage: React.FC = () => {
 							</div>
 						</div>
 							<div className="inline-block bg-red-600 text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-sm">
-								Vota por el Cambio
+								Únete a Nuestra Campaña
 							</div>
 							<div>
 								<h1 className="text-5xl sm:text-6xl font-playfair font-bold mb-6 text-slate-900">
-									Tu Voto es tu
+									Regístrate como
 									<br />
 									<span className="bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">
-										Voz
+										Simpatizante
 									</span>
 								</h1>
 								<p className="text-xl text-slate-700 leading-relaxed max-w-xl font-medium">
-									Participa en el proceso electoral más seguro, transparente e
-									innovador. Tu voto decide el futuro de nuestra nación. Juntos
-									construimos democracia.
+									Forma parte de nuestra base de apoyo. Juntos construiremos 
+									el cambio que Santander necesita. Tu apoyo es fundamental 
+									para nuestra campaña.
 								</p>
 							</div>
 
@@ -73,14 +73,13 @@ const HomePage: React.FC = () => {
 									className="btn-secondary text-lg"
 									onClick={() => navigate("/register")}
 								>
-									Únete Ahora
+									Regístrate Ahora
 								</button>
 							</div>
 
 							<div className="pt-6 border-t border-slate-200">
 								<p className="text-sm text-slate-600 font-medium">
-									✓ 100% Seguro | ✓ Voto Confidencial | ✓ Resultados en Tiempo
-									Real
+									✓ Registro Seguro | ✓ Información Confidencial | ✓ Reportes Estadísticos
 								</p>
 							</div>
 						</div>
@@ -89,7 +88,7 @@ const HomePage: React.FC = () => {
 							<div className="relative">
 								<div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-600 rounded-3xl blur-3xl opacity-40 animate-pulse-glow"></div>
 								<div className="relative text-9xl drop-shadow-2xl animate-float">
-									🗳️
+									✊
 								</div>
 							</div>
 						</div>
@@ -102,50 +101,49 @@ const HomePage: React.FC = () => {
 				<div className="container-premium">
 					<div className="section-header mb-16">
 						<h2 className="font-playfair text-red-600">
-							Por qué esta campaña es diferente
+							¿Por qué registrarte como simpatizante?
 						</h2>
 						<p className="text-lg text-slate-600">
-							Una plataforma electoral revolucionaria, segura y completamente
-							transparente
+							Tu apoyo nos ayuda a construir una campaña más fuerte y organizada
 						</p>
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{[
 							{
-								title: "Máxima Seguridad",
-								desc: "Encriptación de nivel militar con protección de datos de nivel internacional. Tu información está completamente segura.",
+								title: "Base de Datos Segura",
+								desc: "Tu información está protegida con los más altos estándares de seguridad. Solo será usada para fines de campaña.",
 								icon: "🔒",
 								color: "from-red-600 to-red-700",
 							},
 							{
-								title: "Voto Confidencial",
-								desc: "Tu decisión es absolutamente privada. Nadie sabrá por quién votaste. Así es el voto democrático.",
-								icon: "✓",
+								title: "Mantente Informado",
+								desc: "Recibe actualizaciones sobre eventos de campaña, propuestas y actividades en tu ciudad.",
+								icon: "📢",
 								color: "from-orange-600 to-orange-700",
 							},
 							{
-								title: "Acceso Fácil",
-								desc: "Diseño intuitivo que cualquier ciudadano puede usar. Sin complicaciones, solo democracia.",
-								icon: "👥",
+								title: "Análisis por Ciudad",
+								desc: "Ayúdanos a identificar las ciudades donde más apoyo tenemos y dónde necesitamos crecer.",
+								icon: "🗺️",
 								color: "from-amber-600 to-amber-700",
 							},
 							{
-								title: "Resultados en Vivo",
-								desc: "Panel de control con análisis detallados. Mira cómo se desarrolla la elección en tiempo real.",
+								title: "Reportes Estadísticos",
+								desc: "Generamos informes de distribución por edad, género y ubicación para mejorar nuestra estrategia.",
 								icon: "📊",
 								color: "from-cyan-600 to-cyan-700",
 							},
 							{
-								title: "Vota desde Casa",
-								desc: "Participa desde cualquier lugar, en cualquier momento. Democracia sin límites geográficos.",
-								icon: "🌍",
+								title: "Participa Activamente",
+								desc: "Sé parte del movimiento de cambio. Tu registro nos da fuerza para seguir adelante.",
+								icon: "✊",
 								color: "from-emerald-600 to-emerald-700",
 							},
 							{
-								title: "Validación Robusta",
-								desc: "Verificación segura de identidad. Solo votantes registrados pueden ejercer su derecho.",
-								icon: "📱",
+								title: "Validación de Apoyo",
+								desc: "Cada simpatizante registrado es una voz más que respalda nuestra propuesta de cambio.",
+								icon: "✓",
 								color: "from-red-600 to-red-700",
 							},
 						].map((feature, idx) => (
@@ -170,31 +168,31 @@ const HomePage: React.FC = () => {
 				</div>
 			</div>
 
-			{/* Call to Action - Electoral Info */}
+			{/* Call to Action - Campaign Info */}
 			<div className="py-20 px-4 bg-gradient-to-r from-red-700 to-red-800">
 				<div className="container-premium">
 					<h2 className="font-playfair text-4xl font-bold mb-16 text-center text-white">
-						Información Electoral Importante
+						Información de la Campaña
 					</h2>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						<div className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-8 text-white">
 							<div className="text-5xl mb-4">📅</div>
 							<h3 className="font-playfair text-2xl font-bold mb-4">
-								Fechas a Recordar
+								Fechas Importantes
 							</h3>
 							<div className="space-y-3 font-medium">
 								<div>
 									<p className="text-red-200 text-sm uppercase tracking-wide">
-										Día de Votación
+										Elecciones 2026
 									</p>
 									<p className="text-xl">26 de febrero de 2026</p>
 								</div>
 								<div>
 									<p className="text-red-200 text-sm uppercase tracking-wide">
-										Horario Electoral
+										Registro de Simpatizantes
 									</p>
-									<p className="text-xl">8:00 AM - 5:00 PM</p>
+									<p className="text-xl">¡Abierto ahora!</p>
 								</div>
 							</div>
 						</div>
@@ -202,7 +200,7 @@ const HomePage: React.FC = () => {
 						<div className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-8 text-white">
 							<div className="text-5xl mb-4">✅</div>
 							<h3 className="font-playfair text-2xl font-bold mb-4">
-								Requisitos para Votar
+								Para Registrarte
 							</h3>
 							<ul className="space-y-2 font-medium">
 								<li className="flex items-center gap-2">
@@ -215,7 +213,7 @@ const HomePage: React.FC = () => {
 								</li>
 								<li className="flex items-center gap-2">
 									<span className="text-amber-400">★</span>
-									Estar registrado como votante
+									Compartir tus datos básicos
 								</li>
 							</ul>
 						</div>
@@ -223,12 +221,12 @@ const HomePage: React.FC = () => {
 						<div className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-8 text-white">
 							<div className="text-5xl mb-4">🛡️</div>
 							<h3 className="font-playfair text-2xl font-bold mb-4">
-								Protección Legal
+								Protección de Datos
 							</h3>
 							<p className="font-medium leading-relaxed">
 								Cumplimos totalmente con la Ley 1581 de 2012 sobre protección de
-								datos personales y todas las normativas electorales vigentes. Tu
-								información está bajo máxima protección.
+								datos personales. Tu información está bajo máxima protección y 
+								solo será usada para fines de campaña.
 							</p>
 						</div>
 					</div>
@@ -239,39 +237,37 @@ const HomePage: React.FC = () => {
 			<div className="py-20 px-4">
 				<div className="container-premium text-center">
 					<h2 className="font-playfair text-5xl font-bold mb-6 text-slate-900">
-						¿Estás listo para hacer historia?
+						¿Estás listo para unirte al cambio?
 					</h2>
 					<p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto font-medium">
-						Millones de ciudadanos ya están listos. Tu voto es el cambio que
-						esperamos. Regístrate ahora y sé parte de esta revolución
-						democrática.
+						Miles de ciudadanos ya se han registrado como simpatizantes. 
+						Tu apoyo es fundamental para construir el Santander que todos merecemos.
 					</p>
 					<button
 						className="btn-accent text-xl px-12 py-5"
 						onClick={() => navigate("/register")}
 					>
-						Registrarse y Votar
+						Registrarme como Simpatizante
 					</button>
 				</div>
 			</div>
 
-			{/* Candidates Section Preview */}
+			{/* Stats Section */}
 			<div className="py-20 px-4 bg-white/50">
 				<div className="container-premium">
 					<h2 className="font-playfair text-4xl font-bold mb-4 text-center text-slate-900">
-						Conoce a los Candidatos
+						Nuestro Movimiento Crece
 					</h2>
 					<p className="text-center text-slate-600 text-lg mb-12 max-w-2xl mx-auto">
-						Información completa sobre cada candidato, sus propuestas y visiones
-						para el futuro
+						Con cada simpatizante registrado, nuestra campaña se hace más fuerte
 					</p>
 
 					<div className="text-center">
 						<button
 							className="btn-primary text-lg"
-							onClick={() => navigate("/voting")}
+							onClick={() => navigate("/dashboard")}
 						>
-							Ver Candidatos
+							Ver Estadísticas
 						</button>
 					</div>
 				</div>
@@ -283,11 +279,11 @@ const HomePage: React.FC = () => {
 					<div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
 						<div>
 							<h3 className="font-playfair text-white text-xl font-bold mb-4">
-								2026 Electoral
+								Campaña 2026
 							</h3>
 							<p className="leading-relaxed">
-								Plataforma oficial segura y transparente para participar en el
-								proceso democrático más importante de nuestra nación.
+								Sistema de registro de simpatizantes para la campaña de 
+								Camilo Torres - Justicia por Santander.
 							</p>
 						</div>
 						<div>
@@ -306,13 +302,13 @@ const HomePage: React.FC = () => {
 									</a>
 								</li>
 								<li>
-									<a href="#candidates" className="hover:text-white transition">
-										Candidatos
+									<a href="#stats" className="hover:text-white transition">
+										Estadísticas
 									</a>
 								</li>
 								<li>
-									<a href="#results" className="hover:text-white transition">
-										Resultados
+									<a href="#contact" className="hover:text-white transition">
+										Contacto
 									</a>
 								</li>
 							</ul>
@@ -336,8 +332,8 @@ const HomePage: React.FC = () => {
 									</a>
 								</li>
 								<li>
-									<a href="#contact" className="hover:text-white transition">
-										Contacto
+									<a href="#data" className="hover:text-white transition">
+										Datos Personales
 									</a>
 								</li>
 							</ul>
@@ -375,11 +371,11 @@ const HomePage: React.FC = () => {
 					<div className="border-t border-slate-700 pt-8">
 						<div className="flex flex-col md:flex-row justify-between items-center">
 							<p className="text-slate-400">
-								&copy; 2026 Proceso Electoral Nacional. Todos los derechos
+								&copy; 2026 Campaña Camilo Torres. Todos los derechos
 								reservados.
 							</p>
 							<p className="text-slate-400 text-sm mt-4 md:mt-0">
-								Sistema Oficial Certificado | Seguridad Garantizada
+								Sistema de Registro de Simpatizantes | Datos Protegidos
 							</p>
 						</div>
 					</div>

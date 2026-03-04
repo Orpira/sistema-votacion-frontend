@@ -7,11 +7,11 @@ import { useDashboard } from "../context/DashboardContext";
 const DashboardPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { isAuthenticated, logout } = useAuth();
-	const { votingData, loading, error, fetchVotingData } = useDashboard();
+	const { simpatizantes, loading, error, fetchSimpatizantes } = useDashboard();
 
 	const handleLogout = () => {
 		logout();
-		navigate("/inicio", { replace: true });
+		navigate("/", { replace: true });
 	};
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const DashboardPage: React.FC = () => {
 		<div className="min-h-screen bg-gray-50">
 			<div className="bg-white border-b border-gray-200">
 				<div className="flex items-center justify-between p-6 max-w-7xl mx-auto">
-					<h1 className="text-2xl font-bold">Panel de Control Electoral</h1>
+					<h1 className="text-2xl font-bold">Panel de Estadísticas de Campaña</h1>
 					<div className="flex items-center gap-3">
 						<button
 							onClick={() => navigate("/")}
@@ -58,7 +58,7 @@ const DashboardPage: React.FC = () => {
 			)}
 
 			{!loading && (
-				<Dashboard votingData={votingData} onFilterChange={fetchVotingData} />
+				<Dashboard simpatizantes={simpatizantes} onFilterChange={fetchSimpatizantes} />
 			)}
 		</div>
 	);
